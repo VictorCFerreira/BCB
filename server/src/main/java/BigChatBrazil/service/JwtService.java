@@ -26,8 +26,7 @@ public class JwtService {
     public String generateToken(Cliente client) {
         return Jwts.builder()
                 .subject(client.getId().toString())
-                .claim("documentId", client.getDocumento())
-                .claim("name", client.getNome())
+                .claim("documento", client.getDocumento())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getKey())

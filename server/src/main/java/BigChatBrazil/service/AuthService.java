@@ -12,12 +12,12 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final ClienteRepository clientRepository;
+    private final ClienteRepository clienteRepository;
     private final JwtService jwtService;
 
     public AuthResponse authenticate(String documentId) {
         // No BCB não tem senha — o documentId é o "login"
-        Cliente client = clientRepository.findByDocumento(documentId)
+        Cliente client = clienteRepository.findByDocumento(documentId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Cliente não encontrado: " + documentId));
 
