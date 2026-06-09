@@ -10,10 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "conversas")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class Conversa {
 
     @Id
@@ -21,14 +18,12 @@ public class Conversa {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    @JoinColumn(name = "cliente_a_id", nullable = false)
+    private Cliente clienteA;   // quem iniciou
 
-    @Column(nullable = false)
-    private String nomeDestinatario;
-
-    @Column(nullable = false)
-    private String documentoDestinatario;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_b_id", nullable = false)
+    private Cliente clienteB;   // destinatário
 
     private LocalDateTime criadaEm = LocalDateTime.now();
 }

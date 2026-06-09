@@ -37,8 +37,8 @@ export function ChatWindow() {
   return (
     <div className="chat-window">
       <div className="chat-header">
-        <div className="chat-header-name">{conversaAtiva.nomeDestinatario}</div>
-        <div className="chat-header-doc">{conversaAtiva.documentoDestinatario}</div>
+        <div className="chat-header-name">{conversaAtiva.nomeOutroParticipante}</div>
+        <div className="chat-header-doc">{conversaAtiva.documentoOutroParticipante}</div>
       </div>
 
       <div className="chat-messages">

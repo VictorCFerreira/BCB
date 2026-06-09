@@ -14,10 +14,9 @@ public class ConversaService {
     private final ConversaRepository conversaRepository;
 
     public List<ConversaResponse> listarPorCliente(Long clienteId) {
-        return conversaRepository
-                .findByClienteIdOrderByCriadaEmDesc(clienteId)
+        return conversaRepository.findByParticipante(clienteId)
                 .stream()
-                .map(ConversaResponse::from)
+                .map(c -> ConversaResponse.from(c, clienteId))
                 .toList();
     }
 }

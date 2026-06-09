@@ -21,6 +21,28 @@
     font-weight: 600;
     font-size: 15px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    .btn-nova-conversa {
+      background: #075e54;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+  
+      &:hover {
+        background: #064d45;
+      }
+    }
   }
 
   .sidebar-empty {

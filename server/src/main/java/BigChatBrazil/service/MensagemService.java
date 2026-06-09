@@ -58,21 +58,25 @@ public class MensagemService {
                 .toList();
     }
 
-    private Conversa resolverConversa(Cliente cliente, EnviarMensagemRequest req) {
+    private Conversa resolverConversa(Cliente remetente, EnviarMensagemRequest req) {
         if (req.conversaId() != null) {
             return conversaRepository.findById(req.conversaId())
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND, "Conversa não encontrada"));
         }
 
+        Cliente destinatario = clienteRepository
+                .findByDocumento(req.documentoDestinatario())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Destinatário não encontrado: " + req.documentoDestinatario()));
+
         return conversaRepository
-                .findByClienteIdAndDocumentoDestinatario(
-                        cliente.getId(), req.documentoDestinatario())
+                .findByParticipantes(remetente.getId(), destinatario.getId())
                 .orElseGet(() -> conversaRepository.save(
                         Conversa.builder()
-                                .cliente(cliente)
-                                .nomeDestinatario(req.nomeDestinatario())
-                                .documentoDestinatario(req.documentoDestinatario())
+                                .clienteA(remetente)
+                                .clienteB(destinatario)
                                 .build()
                 ));
     }

@@ -11,7 +11,8 @@ public record MensagemResponse(
         String conteudo,
         StatusMensagemEnum status,
         Double custo,
-        LocalDateTime criadaEm
+        LocalDateTime criadaEm,
+        Long remetenteId
 ) {
     public static MensagemResponse from(Mensagem m) {
         return new MensagemResponse(
@@ -19,7 +20,8 @@ public record MensagemResponse(
                 m.getConteudo(),
                 m.getStatus(),
                 m.getCusto(),
-                m.getCriadaEm()
+                m.getCriadaEm(),
+                m.getCliente().getId()
         );
     }
 }

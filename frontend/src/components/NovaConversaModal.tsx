@@ -10,7 +10,6 @@ interface Props {
 
 export function NovaConversaModal({ onClose }: Props) {
   const [documento, setDocumento] = useState('')
-  const [nome, setNome] = useState('')
   const [mensagem, setMensagem] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -18,7 +17,7 @@ export function NovaConversaModal({ onClose }: Props) {
   const { setConversas, setConversaAtiva } = useChatStore()
 
   const handleEnviar = async () => {
-    if (!documento.trim() || !nome.trim() || !mensagem.trim()) {
+    if (!documento.trim()  || !mensagem.trim()) {
       setError('Preencha todos os campos')
       return
     }
@@ -27,12 +26,12 @@ export function NovaConversaModal({ onClose }: Props) {
     setError('')
 
     try {
-      await mensagemService.enviarNova(documento.trim(), nome.trim(), mensagem.trim())
+      await mensagemService.enviarNova(documento.trim(), mensagem.trim())
 
       const conversas = await conversaService.listar()
       setConversas(conversas)
 
-      const nova = conversas.find(c => c.documentoDestinatario === documento.trim())
+      const nova = conversas.find(c => c.documentoOutroParticipante === documento.trim())      
       if (nova) setConversaAtiva(nova)
 
       onClose()
@@ -62,15 +61,6 @@ export function NovaConversaModal({ onClose }: Props) {
           />
         </div>
 
-        <div className="modal-field">
-          <label>Nome do destinatário</label>
-          <input
-            type="text"
-            placeholder="Nome"
-            value={nome}
-            onChange={e => setNome(e.target.value)}
-          />
-        </div>
 
         <div className="modal-field">
           <label>Primeira mensagem</label>
