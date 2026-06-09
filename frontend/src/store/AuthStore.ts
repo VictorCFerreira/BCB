@@ -1,11 +1,17 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+interface ClienteLogado {
+  clientId: number
+  nome: string
+  planType: string
+  saldo: number
+}
+
 interface AuthState {
   token: string | null
-  clientId: string | null
-  name: string | null
-  login: (token: string, clientId: string, name: string) => void
+  cliente: ClienteLogado | null
+  login: (token: string, cliente: ClienteLogado) => void
   logout: () => void
 }
 
@@ -13,10 +19,9 @@ export const useAuthStore = create<AuthState>()(
   persist(
     set => ({
       token: null,
-      clientId: null,
-      name: null,
-      login: (token, clientId, name) => set({ token, clientId, name }),
-      logout: () => set({ token: null, clientId: null, name: null }),
+      cliente: null,
+      login: (token, cliente) => set({ token, cliente }),
+      logout: () => set({ token: null, cliente: null }),
     }),
     { name: 'bcb-auth' }
   )

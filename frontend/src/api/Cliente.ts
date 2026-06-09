@@ -45,7 +45,6 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     throw new Error(error.message ?? `Erro ${response.status}`)
   }
 
-  // 204 No Content não tem body
   if (response.status === 204) return null as T
 
   return response.json()
