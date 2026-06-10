@@ -51,6 +51,10 @@ export default function LoginPage() {
         <button onClick={handleSubmit} disabled={loading}>
           {loading ? 'Entrando...' : 'Entrar'}
         </button>
+        <button onClick={() => navigate('/cadastro')}>
+          Criar conta
+        </button>
+
       </div>
     </div>
   )

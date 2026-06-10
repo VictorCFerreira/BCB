@@ -45,8 +45,9 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     throw new Error(error.message ?? `Erro ${response.status}`)
   }
 
-  if (response.status === 204) return null as T
-
+  if (response.status === 204 || (response.status === 201 && !response.headers.get('content-type')?.includes('application/json'))) {
+    return null as T
+    }
   return response.json()
 }
 

@@ -57,6 +57,7 @@
         font-size: 15px;
         font-weight: 500;
         cursor: pointer;
+        margin-bottom: 8px;
   
         &:hover:not(:disabled) {
           background: #064d45;
@@ -67,5 +68,7 @@
           cursor: default;
         }
       }
+
+      
     }
   }

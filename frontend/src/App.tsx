@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import { useAuthStore } from './store/authStore'
 import ChatPage from './pages/ChatPage'
+import CadastroPage from './pages/CadastroPage'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { token } = useAuthStore()
@@ -13,6 +14,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/cadastro" element={<CadastroPage />} />
          <Route path="/chat" element={
           <PrivateRoute><ChatPage /></PrivateRoute>
         } /> 

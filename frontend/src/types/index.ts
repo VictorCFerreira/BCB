@@ -14,3 +14,13 @@ export interface Mensagem {
   remetenteId: number
   valorAtualizado: number
 }
+
+export interface AuthResponse {
+  token: string
+  clientId: number
+  nome: string
+  planType: 'PRE_PAGO' | 'POS_PAGO'
+  saldo?: number
+  limiteMensal?: number
+  gastoMesAtual?: number
+}
