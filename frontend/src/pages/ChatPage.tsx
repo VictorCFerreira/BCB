@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import '../styles/chat.scss'
-import { useAuthStore } from '../store/AuthStore'
+import { useAuthStore } from '../store/authStore'
 import { Sidebar } from '../components/Sidebar'
 import { ChatWindow } from '../components/ChatWindow'
 

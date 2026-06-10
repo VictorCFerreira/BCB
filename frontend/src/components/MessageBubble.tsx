@@ -1,4 +1,4 @@
-import { useAuthStore } from '../store/AuthStore'
+import { useAuthStore } from '../store/authStore'
 import '../styles/chat.scss'
 import type { Mensagem } from '../types'
 

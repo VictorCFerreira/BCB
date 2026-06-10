@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/login.scss'
 import { api } from '../api/Cliente'
-import { useAuthStore } from '../store/AuthStore'
+import { useAuthStore } from '../store/authStore'
 
 export default function LoginPage() {
   const [documento, setDocumento] = useState('')

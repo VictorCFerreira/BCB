@@ -1,15 +1,16 @@
 package BigChatBrazil.infra.messages;
 
 import BigChatBrazil.Enum.StatusMensagemEnum;
+import BigChatBrazil.domain.DTO.Response.MensagemResponse;
 import BigChatBrazil.repository.MensagemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 
 @Component
 @Slf4j
@@ -18,6 +19,7 @@ public class MessageWorker {
 
     private final MessageQueue messageQueue;
     private final MensagemRepository mensagemRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Scheduled(fixedDelay = 2000)
     public void processar() {
@@ -38,6 +40,12 @@ public class MessageWorker {
                 }
 
                 mensagemRepository.save(msg);
+
+                // publica no tópico da conversa
+                messagingTemplate.convertAndSend(
+                        "/topic/conversa/" + msg.getConversa().getId(),
+                        MensagemResponse.from(msg, null)
+                );
             });
         }
     }

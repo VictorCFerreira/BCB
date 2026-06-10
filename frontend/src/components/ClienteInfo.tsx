@@ -1,4 +1,4 @@
-import { useAuthStore } from '../store/AuthStore'
+import { useAuthStore } from '../store/authStore'
 import '../styles/cliente-info.scss'
 
 export function ClienteInfo() {

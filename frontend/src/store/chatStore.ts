@@ -9,6 +9,7 @@ interface ChatState {
   setConversaAtiva: (conversa: Conversa) => void
   setMensagens: (conversaId: number, mensagens: Mensagem[]) => void
   appendMensagem: (conversaId: number, mensagem: Mensagem) => void
+  atualizarMensagem: (conversaId: number, mensagem: Mensagem) => void
 }
 
 export const useChatStore = create<ChatState>()(set => ({
@@ -26,4 +27,13 @@ export const useChatStore = create<ChatState>()(set => ({
         [id]: [...(s.mensagens[id] ?? []), mensagem],
       },
     })),
+    atualizarMensagem: (conversaId: number, mensagem: Mensagem) =>
+      set(s => ({
+        mensagens: {
+          ...s.mensagens,
+          [conversaId]: s.mensagens[conversaId].map(m =>
+            m.id === mensagem.id ? mensagem : m
+          ),
+        },
+      })),
 }))
