@@ -4,11 +4,15 @@ import { mensagemService } from '../services/mensagemService'
 import { useChatStore } from '../store/chatStore'
 import { MessageBubble } from './MessageBubble'
 import { MessageInput } from './MessageInput'
+import { useAuthStore } from '../store/AuthStore'
 
 export function ChatWindow() {
   const { conversaAtiva, mensagens, setMensagens, appendMensagem } = useChatStore()
   const bottomRef = useRef<HTMLDivElement>(null)
   const msgs = conversaAtiva ? (mensagens[conversaAtiva.id] ?? []) : []
+  const { atualizarValor } = useAuthStore()
+
+
 
   useEffect(() => {
     if (!conversaAtiva) return
@@ -24,6 +28,7 @@ export function ChatWindow() {
     if (!conversaAtiva) return
     const nova = await mensagemService.enviar(conversaAtiva.id, conteudo)
     appendMensagem(conversaAtiva.id, nova)
+    atualizarValor(nova.valorAtualizado)
   }
 
   if (!conversaAtiva) {

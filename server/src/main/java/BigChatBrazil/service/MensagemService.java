@@ -27,6 +27,7 @@ public class MensagemService {
     private final MensagemRepository mensagemRepository;
     private final ConversaRepository conversaRepository;
     private final ClienteRepository clienteRepository;
+    private final PagamentoService pagamentoService;
     private final MessageQueue messageQueue;
 
     public MensagemResponse enviar(Long clienteId, EnviarMensagemRequest req) {
@@ -35,6 +36,8 @@ public class MensagemService {
                         HttpStatus.NOT_FOUND, "Cliente não encontrado"));
 
         Conversa conversa = resolverConversa(cliente, req);
+
+        Double valorAtualizado = pagamentoService.cobrar(cliente);
 
         Mensagem mensagem = Mensagem.builder()
                 .conversa(conversa)
@@ -47,14 +50,14 @@ public class MensagemService {
         mensagem = mensagemRepository.save(mensagem);
         messageQueue.enqueue(mensagem.getId());
 
-        return MensagemResponse.from(mensagem);
+        return MensagemResponse.from(mensagem, valorAtualizado);
     }
 
     public List<MensagemResponse> listarPorConversa(Long conversaId) {
         return mensagemRepository
                 .findByConversaIdOrderByCriadaEmAsc(conversaId)
                 .stream()
-                .map(MensagemResponse::from)
+                .map(m -> MensagemResponse.from(m, null))
                 .toList();
     }
 

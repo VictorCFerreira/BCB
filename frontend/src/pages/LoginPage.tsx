@@ -21,6 +21,8 @@ export default function LoginPage() {
         nome: data.nome,
         planType: data.planType,
         saldo: data.saldo,
+        limiteMensal: data.limiteMensal,
+        gastoMesAtual: data.gastoMesAtual,
       })
       navigate('/chat')
     } catch (e: any) {

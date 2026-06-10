@@ -12,16 +12,18 @@ public record MensagemResponse(
         StatusMensagemEnum status,
         Double custo,
         LocalDateTime criadaEm,
-        Long remetenteId
+        Long remetenteId,
+        Double valorAtualizado
 ) {
-    public static MensagemResponse from(Mensagem m) {
+    public static MensagemResponse from(Mensagem m, Double valorAtualizado) {
         return new MensagemResponse(
                 m.getId(),
                 m.getConteudo(),
                 m.getStatus(),
                 m.getCusto(),
                 m.getCriadaEm(),
-                m.getCliente().getId()
+                m.getCliente().getId(),
+                valorAtualizado
         );
     }
 }

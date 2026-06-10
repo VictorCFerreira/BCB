@@ -5,7 +5,12 @@
   display: flex;
   flex-direction: column;
   background: #fff;
-  overflow-y: auto;
+  overflow: hidden;
+
+  .sidebar-lista {
+    flex: 1;         
+    overflow-y: auto;
+  }
 
   @media (max-width: 640px) {
     width: 100%;

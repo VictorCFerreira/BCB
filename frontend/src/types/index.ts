@@ -12,4 +12,5 @@ export interface Mensagem {
   custo: number
   criadaEm: string
   remetenteId: number
+  valorAtualizado: number
 }

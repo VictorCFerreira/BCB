@@ -3,6 +3,7 @@ import '../styles/sidebar.scss'
 import { conversaService } from '../services/conversaService'
 import { useChatStore } from '../store/chatStore'
 import { NovaConversaModal } from './NovaConversaModal'
+import { ClienteInfo } from './ClienteInfo'
 
 export function Sidebar() {
   const { conversas, conversaAtiva, setConversas, setConversaAtiva } = useChatStore()
@@ -17,33 +18,32 @@ export function Sidebar() {
       <div className={`sidebar ${conversaAtiva ? 'tem-conversa-ativa' : ''}`}>
         <div className="sidebar-header">
           <span>Conversas</span>
-          <button
-            className="btn-nova-conversa"
-            onClick={() => setModalAberto(true)}
-          >
+          <button className="btn-nova-conversa" onClick={() => setModalAberto(true)}>
             +
           </button>
         </div>
-
-        {conversas.length === 0 ? (
-          <p className="sidebar-empty">Nenhuma conversa ainda</p>
-        ) : (
-          conversas.map(c => (
-            <div
-              key={c.id}
-              className={`conversa-item ${conversaAtiva?.id === c.id ? 'ativa' : ''}`}
-              onClick={() => setConversaAtiva(c)}
-            >
-              <p className="conversa-nome">{c.nomeOutroParticipante}</p>
-              <p className="conversa-doc">{c.documentoOutroParticipante}</p>
-            </div>
-          ))
-        )}
+  
+        <div className="sidebar-lista"> 
+          {conversas.length === 0 ? (
+            <p className="sidebar-empty">Nenhuma conversa ainda</p>
+          ) : (
+            conversas.map(c => (
+              <div
+                key={c.id}
+                className={`conversa-item ${conversaAtiva?.id === c.id ? 'ativa' : ''}`}
+                onClick={() => setConversaAtiva(c)}
+              >
+                <p className="conversa-nome">{c.nomeOutroParticipante}</p>
+                <p className="conversa-doc">{c.documentoOutroParticipante}</p>
+              </div>
+            ))
+          )}
+        </div>
+  
+        <ClienteInfo />
       </div>
-
-      {modalAberto && (
-        <NovaConversaModal onClose={() => setModalAberto(false)} />
-      )}
+  
+      {modalAberto && <NovaConversaModal onClose={() => setModalAberto(false)} />}
     </>
   )
 }

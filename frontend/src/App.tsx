@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
-import { useAuthStore } from './store/AuthStore'
+import { useAuthStore } from './store/authStore'
 import ChatPage from './pages/ChatPage'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {

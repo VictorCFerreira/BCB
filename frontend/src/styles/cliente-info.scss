@@ -1,0 +1,36 @@
+.cliente-info {
+    padding: 10px 14px;
+    border-top: 1px solid #e0e0e0;
+    background: #f9f9f9;
+  
+    .cliente-nome {
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 4px;
+    }
+  
+    .cliente-saldo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  
+      .info-label {
+        font-size: 11px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+  
+      .info-valor {
+        font-size: 13px;
+        font-weight: 500;
+        color: #075e54;
+  
+        .info-limite {
+          font-weight: 400;
+          color: #888;
+        }
+      }
+    }
+  }
