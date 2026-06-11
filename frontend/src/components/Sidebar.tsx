@@ -11,7 +11,14 @@ export function Sidebar() {
 
   useEffect(() => {
     conversaService.listar().then(setConversas)
+  
+    const interval = setInterval(() => {
+      conversaService.listar().then(setConversas)
+    }, 5000)
+  
+    return () => clearInterval(interval)
   }, [])
+
 
   return (
     <>

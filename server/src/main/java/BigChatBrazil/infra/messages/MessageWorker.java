@@ -41,7 +41,6 @@ public class MessageWorker {
 
                 mensagemRepository.save(msg);
 
-                // publica no tópico da conversa
                 messagingTemplate.convertAndSend(
                         "/topic/conversa/" + msg.getConversa().getId(),
                         MensagemResponse.from(msg, null)

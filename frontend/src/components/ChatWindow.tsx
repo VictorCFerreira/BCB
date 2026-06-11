@@ -23,16 +23,16 @@ export function ChatWindow() {
     mensagemService.listarPorConversa(conversaAtiva.id)
       .then(m => setMensagens(conversaAtiva.id, m))
 
-    conectar(conversaAtiva.id, (novaMensagem) => {
-      const msgs = useChatStore.getState().mensagens[conversaAtiva.id] ?? []
-      const jaExiste = msgs.some(m => m.id === novaMensagem.id)
-
-      if (jaExiste) {
-        useChatStore.getState().atualizarMensagem(conversaAtiva.id, novaMensagem)
-      } else {
-        useChatStore.getState().appendMensagem(conversaAtiva.id, novaMensagem)
-      }
-    })
+      conectar(conversaAtiva.id, (novaMensagem) => {
+        const msgs = useChatStore.getState().mensagens[conversaAtiva.id] ?? []
+        const jaExiste = msgs.some(m => m.id === novaMensagem.id)
+      
+        if (jaExiste) {
+          useChatStore.getState().atualizarMensagem(conversaAtiva.id, novaMensagem)
+        } else {
+          useChatStore.getState().appendMensagem(conversaAtiva.id, novaMensagem)
+        }
+      })
 
     return () => { desconectar() }
   }, [conversaAtiva?.id])
