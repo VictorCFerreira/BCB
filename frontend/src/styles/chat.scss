@@ -172,5 +172,21 @@ html, body, #root {
     &:hover:not(:disabled) {
       background: #064d45;
     }
+
+    .select-prioridade {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 16px;
+      font-size: 12px;
+      outline: none;
+      background: white;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+  
+      &:focus {
+        border-color: #075e54;
+      }
+    }
   }
 }

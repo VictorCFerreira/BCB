@@ -16,6 +16,7 @@ interface AuthState {
   login: (token: string, cliente: ClienteLogado) => void
   logout: () => void
   atualizarValor: (valor: number) => void
+  atualizarLimite: (novoLimite: number) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -30,6 +31,9 @@ export const useAuthStore = create<AuthState>()(
           saldo: s.cliente.planType === 'PRE_PAGO' ? valor : s.cliente.saldo,
           gastoMesAtual: s.cliente.planType === 'POS_PAGO' ? valor : s.cliente.gastoMesAtual,
         } : null
+      })),
+      atualizarLimite: (novoLimite: number) => set(s => ({
+        cliente: s.cliente ? { ...s.cliente, limiteMensal: novoLimite } : null
       })),
     }),
     { name: 'bcb-auth' }

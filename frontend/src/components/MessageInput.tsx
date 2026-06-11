@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import '../styles/chat.scss'
+import type { Prioridade } from '../types'
 
 interface Props {
-  onSend: (conteudo: string) => Promise<void>
+  onSend: (conteudo: string, prioridade: Prioridade) => Promise<void>
 }
 
 export function MessageInput({ onSend }: Props) {
   const [conteudo, setConteudo] = useState('')
+  const [prioridade, setPrioridade] = useState<Prioridade>('NORMAL')
   const [loading, setLoading] = useState(false)
 
   const handleSend = async () => {
     if (!conteudo.trim() || loading) return
     setLoading(true)
     try {
-      await onSend(conteudo.trim())
+      await onSend(conteudo.trim(), prioridade)
       setConteudo('')
     } finally {
       setLoading(false)
@@ -22,6 +24,14 @@ export function MessageInput({ onSend }: Props) {
 
   return (
     <div className="message-input">
+      <select
+        value={prioridade}
+        onChange={e => setPrioridade(e.target.value as Prioridade)}
+        className="select-prioridade"
+      >
+        <option value="NORMAL">Normal · R$0,25</option>
+        <option value="URGENTE">Urgente · R$0,50</option>
+      </select>
       <input
         type="text"
         placeholder="Digite uma mensagem..."

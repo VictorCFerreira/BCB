@@ -1,36 +1,61 @@
 .cliente-info {
-    padding: 10px 14px;
-    border-top: 1px solid #e0e0e0;
-    background: #f9f9f9;
-  
+  padding: 10px 14px;
+  border-top: 1px solid #e0e0e0;
+  background: #f9f9f9;
+
+  .cliente-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+
     .cliente-nome {
       font-size: 13px;
       font-weight: 500;
       color: #333;
-      margin-bottom: 4px;
     }
-  
-    .cliente-saldo {
+
+    .btn-financeiro {
+      background: transparent;
+      border: 1px solid #075e54;
+      color: #075e54;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 13px;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-  
-      .info-label {
-        font-size: 11px;
-        color: #888;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
-  
-      .info-valor {
-        font-size: 13px;
-        font-weight: 500;
-        color: #075e54;
-  
-        .info-limite {
-          font-weight: 400;
-          color: #888;
-        }
+      justify-content: center;
+      flex-shrink: 0;
+
+      &:hover {
+        background: #f0faf8;
       }
     }
   }
+
+  .cliente-saldo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .info-label {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .info-valor {
+      font-size: 13px;
+      font-weight: 500;
+      color: #075e54;
+
+      .info-limite {
+        font-weight: 400;
+        color: #888;
+      }
+    }
+  }
+}

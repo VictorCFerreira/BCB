@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "clientes")
 @Data
@@ -34,5 +36,6 @@ public class Cliente {
 
     private Double gastoMesAtual = 0.00;
 
+    private LocalDateTime ultimoResetMensal;
 
 }

@@ -5,9 +5,12 @@ export interface Conversa {
   criadaEm: string
 }
 
+export type Prioridade = 'NORMAL' | 'URGENTE'
+
 export interface Mensagem {
   id: number
   conteudo: string
+  prioridade: Prioridade
   status: 'ENFILEIRADA' | 'PROCESSANDO' | 'ENVIADA' | 'FALHA'
   custo: number
   criadaEm: string

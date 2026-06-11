@@ -1,17 +1,21 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import '../styles/chat.scss'
+import '../styles/modal.scss'
 import { mensagemService } from '../services/mensagemService'
 import { useChatStore } from '../store/chatStore'
 import { MessageBubble } from './MessageBubble'
 import { MessageInput } from './MessageInput'
 import { useAuthStore } from '../store/authStore'
 import { conectar, desconectar } from '../services/webSocketService'
+import type { Prioridade } from '../types'
 
 export function ChatWindow() {
-  const { conversaAtiva, mensagens, setMensagens, appendMensagem } = useChatStore()
+  const { conversaAtiva, mensagens, setMensagens } = useChatStore()
   const { atualizarValor } = useAuthStore()
+  const [erroPagamento, setErroPagamento] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const msgs = conversaAtiva ? (mensagens[conversaAtiva.id] ?? []) : []
+
 
   useEffect(() => {
     if (!conversaAtiva) return
@@ -37,11 +41,16 @@ export function ChatWindow() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [msgs.length])
 
-  const handleSend = async (conteudo: string) => {
+
+  const handleSend = async (conteudo: string, prioridade: Prioridade) => {
     if (!conversaAtiva) return
-    const nova = await mensagemService.enviar(conversaAtiva.id, conteudo)
-    appendMensagem(conversaAtiva.id, nova);
-    atualizarValor(nova.valorAtualizado)
+    try {
+      const nova = await mensagemService.enviar(conversaAtiva.id, conteudo, prioridade)
+      useChatStore.getState().appendMensagem(conversaAtiva.id, nova)
+      atualizarValor(nova.valorAtualizado)
+    } catch (e: any) {
+      setErroPagamento(e.message ?? 'Erro ao enviar mensagem')
+    }
   }
 
   if (!conversaAtiva) {
@@ -65,6 +74,27 @@ export function ChatWindow() {
       </div>
 
       <MessageInput onSend={handleSend} />
+      
+      {erroPagamento && (
+        <div className="modal-overlay" onClick={() => setErroPagamento(null)}>
+          <div className="modal">
+            <p className="modal-title" style={{ color: '#c0392b' }}>
+              Saldo insuficiente
+            </p>
+            <p style={{ fontSize: 14, color: '#444', margin: '0 0 20px' }}>
+              {erroPagamento}
+            </p>
+            <div className="modal-actions">
+              <button className="btn-enviar" onClick={() => setErroPagamento(null)}>
+                Entendido
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
+
+
   )
 }

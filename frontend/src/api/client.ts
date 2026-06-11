@@ -40,14 +40,26 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     throw new Error('Não autorizado')
   }
 
+  if (response.status === 403) {
+    const msg = await response.text()
+    throw new Error(msg || 'Acesso negado')
+  }
+  
+  if (response.status === 402) {
+    const msg = await response.text()
+    throw new Error(msg || 'Saldo ou limite insuficiente')
+  }
+  
+  if (response.status === 204 ||
+     (response.status === 201 && !response.headers.get('content-type')?.includes('application/json'))) {
+    return null as T
+  }
+  
   if (!response.ok) {
     const error = await response.json().catch(() => ({ message: 'Erro desconhecido' }))
     throw new Error(error.message ?? `Erro ${response.status}`)
   }
-
-  if (response.status === 204 || (response.status === 201 && !response.headers.get('content-type')?.includes('application/json'))) {
-    return null as T
-    }
+  
   return response.json()
 }
 
@@ -63,4 +75,5 @@ export const api = {
 
   delete: <T>(path: string) =>
     request<T>(path, { method: 'DELETE' }),
+
 }

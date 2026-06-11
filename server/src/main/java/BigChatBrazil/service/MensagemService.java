@@ -1,5 +1,6 @@
 package BigChatBrazil.service;
 
+import BigChatBrazil.Enum.PrioridadeEnum;
 import BigChatBrazil.Enum.StatusMensagemEnum;
 import BigChatBrazil.domain.Cliente;
 import BigChatBrazil.domain.Conversa;
@@ -37,18 +38,24 @@ public class MensagemService {
 
         Conversa conversa = resolverConversa(cliente, req);
 
-        Double valorAtualizado = pagamentoService.cobrar(cliente);
+        PrioridadeEnum prioridade = req.prioridade() != null
+                ? req.prioridade()
+                : PrioridadeEnum.NORMAL;
+
+        Double valorAtualizado = pagamentoService.cobrar(cliente, prioridade);
+        Double custo = pagamentoService.calcularCusto(prioridade);
 
         Mensagem mensagem = Mensagem.builder()
                 .conversa(conversa)
                 .cliente(cliente)
                 .conteudo(req.conteudo())
+                .prioridade(prioridade)
                 .status(StatusMensagemEnum.ENFILEIRADA)
-                .custo(0.25)
+                .custo(custo)
                 .build();
 
         mensagem = mensagemRepository.save(mensagem);
-        messageQueue.enqueue(mensagem.getId());
+        messageQueue.enqueue(mensagem.getId(), prioridade);
 
         return MensagemResponse.from(mensagem, valorAtualizado);
     }

@@ -1,5 +1,6 @@
 package BigChatBrazil.domain;
 
+import BigChatBrazil.Enum.PrioridadeEnum;
 import BigChatBrazil.Enum.StatusMensagemEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,10 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "mensagens")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class Mensagem {
 
     @Id
@@ -33,10 +31,14 @@ public class Mensagem {
     private String conteudo;
 
     @Enumerated(EnumType.STRING)
+    private PrioridadeEnum prioridade = PrioridadeEnum.NORMAL;
+
+    @Enumerated(EnumType.STRING)
     private StatusMensagemEnum status = StatusMensagemEnum.ENFILEIRADA;
 
     private Double custo;
 
     private LocalDateTime criadaEm = LocalDateTime.now();
+
     private LocalDateTime processadaEm;
 }

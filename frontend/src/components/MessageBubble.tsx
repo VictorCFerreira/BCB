@@ -1,12 +1,16 @@
 import { useAuthStore } from '../store/authStore'
 import '../styles/chat.scss'
-import type { Mensagem } from '../types'
+import type { Mensagem, Prioridade } from '../types'
 
 const statusIcon: Record<Mensagem['status'], string> = {
   ENFILEIRADA: 'E',
   PROCESSANDO: 'P',
   ENVIADA: '✓',
   FALHA: '✗',
+}
+const prioridadeLabel: Record<Prioridade, string> = {
+  NORMAL: '',
+  URGENTE: '>>>',
 }
 
 
@@ -26,7 +30,7 @@ export function MessageBubble({ mensagem }: { mensagem: Mensagem }) {
       }}>
         <p className="bubble-text">{mensagem.conteudo}</p>
         <p className="bubble-status">
-          {isEnviada ? statusIcon[mensagem.status] : ''}
+          {prioridadeLabel[mensagem.prioridade]} {statusIcon[mensagem.status]} · R${mensagem.custo?.toFixed(2)}
         </p>
       </div>
     </div>

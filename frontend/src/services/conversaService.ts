@@ -1,4 +1,4 @@
-import { api } from '../api/Cliente'
+import { api } from '../api/client'
 import type { Conversa } from '../types'
 
 export const conversaService = {
