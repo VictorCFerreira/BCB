@@ -3,6 +3,7 @@ import '../styles/modal.scss'
 import { mensagemService } from '../services/mensagemService'
 import { useChatStore } from '../store/chatStore'
 import { conversaService } from '../services/conversaService'
+import type { Prioridade } from '../types'
 
 interface Props {
   onClose: () => void
@@ -13,11 +14,16 @@ export function NovaConversaModal({ onClose }: Props) {
   const [mensagem, setMensagem] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [prioridade, setPrioridade] = useState<Prioridade>('NORMAL')
+
 
   const { setConversas, setConversaAtiva } = useChatStore()
 
+
+
+
   const handleEnviar = async () => {
-    if (!documento.trim()  || !mensagem.trim()) {
+    if (!documento.trim() || !mensagem.trim()) {
       setError('Preencha todos os campos')
       return
     }
@@ -26,12 +32,12 @@ export function NovaConversaModal({ onClose }: Props) {
     setError('')
 
     try {
-      await mensagemService.enviarNova(documento.trim(), mensagem.trim())
+      await mensagemService.enviarNova(documento.trim(), mensagem.trim(), prioridade)
 
       const conversas = await conversaService.listar()
       setConversas(conversas)
 
-      const nova = conversas.find(c => c.documentoOutroParticipante === documento.trim())      
+      const nova = conversas.find(c => c.documentoOutroParticipante === documento.trim())
       if (nova) setConversaAtiva(nova)
 
       onClose()
@@ -70,6 +76,17 @@ export function NovaConversaModal({ onClose }: Props) {
             value={mensagem}
             onChange={e => setMensagem(e.target.value)}
           />
+        </div>
+
+        <div className="modal-field">
+          <label>Prioridade</label>
+          <select
+            value={prioridade}
+            onChange={e => setPrioridade(e.target.value as Prioridade)}
+          >
+            <option value="NORMAL">Normal · R$0,25</option>
+            <option value="URGENTE">Urgente · R$0,50</option>
+          </select>
         </div>
 
         {error && <p className="modal-error">{error}</p>}

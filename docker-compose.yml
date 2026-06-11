@@ -5,10 +5,34 @@ services:
       POSTGRES_DB: bcb
       POSTGRES_USER: bcb
       POSTGRES_PASSWORD: bcb
-    ports:
-      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bcb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./server
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bcb
+      SPRING_DATASOURCE_USERNAME: bcb
+      SPRING_DATASOURCE_PASSWORD: bcb
+      BCB_JWT_SECRET: bcb-secret-dev-key-minimo-32-chars-ok
+      BCB_JWT_EXPIRATION: 86400000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
 
 volumes:
   pgdata:
