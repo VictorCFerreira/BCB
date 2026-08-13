@@ -1,12 +1,12 @@
 # BCB — Big Chat Brasil
 
-Plataforma de chat para comunicação entre clientes, com suporte a planos pré-pago e pós-pago, fila de mensagens com prioridade e comunicação em tempo real via WebSocket.
+A chat platform for communication between clients, with support for prepaid and postpaid plans, a priority message queue, and real-time communication via WebSocket.
 
-Desenvolvido por **Victor** como solução para o desafio técnico fullstack BCB.
+Developed by **Victor**.
 
 ---
 
-## Tecnologias
+## Tech stack
 
 **Backend**
 - Java 21 + Spring Boot
@@ -17,16 +17,16 @@ Desenvolvido por **Victor** como solução para o desafio técnico fullstack BCB
 
 **Frontend**
 - React + TypeScript + Vite
-- Zustand (gerenciamento de estado)
+- Zustand (state management)
 - SCSS
 - STOMP.js + SockJS
 
-**Infraestrutura**
+**Infrastructure**
 - Docker + Docker Compose
 
 ---
 
-## Como executar
+## Getting started
 
 ```bash
 git clone https://github.com/VictorCFerreira/BCB
@@ -34,8 +34,7 @@ cd BCB
 docker-compose up --build
 ```
 
-
-| Serviço  | URL                                         |
+| Service  | URL                                         |
 |----------|---------------------------------------------|
 | Frontend | http://localhost:3000                       |
 | Backend  | http://localhost:8080                       |
@@ -43,79 +42,82 @@ docker-compose up --build
 
 ---
 
-## Caminho feliz — como testar
+## Happy path — how to try it
 
-### 1. Cadastrar dois usuários
+### 1. Register two users
 
-Acesse http://localhost:3000 e clique em **Criar conta**.
+Open http://localhost:3000 and click **Create account**.
 
-Cadastre dois usuários com planos à sua escolha:
-- Usuário A — ex: CPF `11111111111`, plano Pré-pago
-- Usuário B — ex: CPF `22222222222`, plano Pós-pago
+Register two users with plans of your choice:
+- User A — e.g. CPF `11111111111`, Prepaid plan
+- User B — e.g. CPF `22222222222`, Postpaid plan
 
-### 2. Logar em dois navegadores diferentes(No ex: Chrome + Firefox)
+### 2. Sign in on two different browsers (e.g. Chrome + Firefox)
 
-- Acesse http://localhost:3000 no **Chrome** e logue com o Usuário A
-- Acesse http://localhost:3000 no **Firefox** (ou uma guia anônima) e logue com o Usuário B
+- Open http://localhost:3000 in **Chrome** and sign in as User A
+- Open http://localhost:3000 in **Firefox** (or a private window) and sign in as User B
 
-### 3. Recarregar saldo / atualizar limite
+### 3. Top up balance / update limit
 
-Na sidebar inferior, clique no botão **$** ao lado do nome do usuário logado:
-- Usuário pré-pago: informe um valor para recarregar o saldo
-- Usuário pós-pago: informe um novo limite mensal
+In the bottom sidebar, click the **$** button next to the signed-in user's name:
+- Prepaid user: enter an amount to top up the balance
+- Postpaid user: enter a new monthly limit
 
-### 4. Enviar primeira mensagem
+### 4. Send the first message
 
-No Chrome (Usuário A), clique em **+** na sidebar e:
-- Informe o documento do Usuário B (`22222222222`)
-- Escolha a prioridade (Normal R$0,25 ou Urgente R$0,50)
-- Digite a primeira mensagem e envie
+In Chrome (User A), click **+** in the sidebar and:
+- Enter User B's document (`22222222222`)
+- Choose a priority (Normal R$0.25 or Urgent R$0.50)
+- Type the first message and send it
 
-A conversa aparecerá automaticamente na sidebar do Usuário B em até 5 segundos.
+The conversation will appear automatically in User B's sidebar within 5 seconds.
 
-### 5. Testar o tempo real
+### 5. Test real-time messaging
 
-- No Firefox (Usuário B), clique na conversa que apareceu e responda
-- No Chrome (Usuário A), a mensagem aparece em tempo real via WebSocket
+- In Firefox (User B), open the conversation that appeared and reply
+- In Chrome (User A), the message appears in real time via WebSocket
 
-### 6. Testar validação financeira
+### 6. Test billing validation
 
-Tente enviar mensagens até o saldo/limite acabar — um dialog de erro informará o valor disponível.
-
----
-
-## Premissas assumidas
-
-- O destinatário de uma mensagem precisa ser um cliente cadastrado no sistema
-- Não há senha de acesso — o CPF ou CNPJ funciona como identificador único, conforme especificado no documento do desafio
-- O custo da mensagem é debitado no momento do envio
+Keep sending messages until the balance or limit runs out — an error dialog will show the available amount.
 
 ---
 
-## Decisões arquiteturais
+## Assumptions
 
-### Modelo bidirecional de conversas
-O documento original sugeria um modelo unidirecional onde o destinatário seria um contato externo. Optei pelo modelo bidirecional onde ambos os participantes são clientes cadastrados, permitindo que os dois lados visualizem e respondam a mesma conversa.
-
-### Fila com suporte a prioridade
-A fila de mensagens foi implementada com uma interface `MessageQueue`. A implementação ativa é a `PriorityMessageQueue` com `PriorityBlockingQueue` — mensagens urgentes são sempre processadas antes das normais dentro do mesmo ciclo do worker, e dentro do mesmo nível de prioridade a ordem é FIFO.
-
-### Autenticação por documento
-Não há senha — o CPF/CNPJ funciona como identificador único de acesso. O token JWT é gerado no login e usado para autenticar todas as requisições subsequentes.
-
-### Reset mensal automático
-O consumo mensal de clientes pós-pago é zerado automaticamente no primeiro envio de mensagem após a virada do mês, sem necessidade de job externo agendado.
-
+- The recipient of a message must be a registered client in the system
+- There is no password — CPF or CNPJ acts as the unique identifier for sign-in
+- Message cost is charged at send time
 
 ---
 
-## O que faria em projetos maiores
+## Architecture decisions
 
-- **Migrações com Flyway** — versionamento do schema do banco com rollback controlado, substituindo o `ddl-auto: update` atual
-- **Testes unitários** — cobertura do `PagamentoService` e `MensagemService`, garantindo as regras de negócio
-- **Internacionalização com i18n** — suporte a múltiplos idiomas no frontend
-- **Sistema de notificações via WebSocket** — notificar o cliente quando chegar mensagem em conversas que não estão abertas, com contador de não lidas na sidebar
-- **Rate limiting** — limitar requisições por cliente para evitar abuso da API
-- **Refresh token** — renovação automática do JWT sem precisar relogar
-- **Estorno automático** — devolver o valor ao cliente em caso de falha no processamento da mensagem
-- **Estratégia de retry** — retentar automaticamente mensagens com status FALHA
+### Bidirectional conversation model
+
+Both participants are registered clients, so each side can view and reply in the same conversation.
+
+### Priority message queue
+
+The message queue is built behind a `MessageQueue` interface. The active implementation is `PriorityMessageQueue` with a `PriorityBlockingQueue` — urgent messages are always processed before normal ones within the same worker cycle, and within the same priority level the order is FIFO.
+
+### Document-based authentication
+
+There is no password — CPF/CNPJ is the unique access identifier. A JWT is issued at sign-in and used to authenticate all subsequent requests.
+
+### Automatic monthly reset
+
+Monthly usage for postpaid clients is reset automatically on the first message sent after the month changes, without an external scheduled job.
+
+---
+
+## What I would add at larger scale
+
+- **Flyway migrations** — versioned database schema with controlled rollbacks, replacing the current `ddl-auto: update`
+- **Unit tests** — coverage for `PagamentoService` and `MensagemService` to lock in business rules
+- **i18n** — multi-language support in the frontend
+- **WebSocket notifications** — notify clients when a message arrives in a conversation that is not open, with unread counts in the sidebar
+- **Rate limiting** — cap requests per client to reduce API abuse
+- **Refresh tokens** — renew JWTs automatically without signing in again
+- **Automatic refunds** — return the charge to the client if message processing fails
+- **Retry strategy** — automatically retry messages with `FALHA` status
