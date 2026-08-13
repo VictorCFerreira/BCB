@@ -49,14 +49,14 @@ export function ChatWindow() {
       useChatStore.getState().appendMensagem(conversaAtiva.id, nova)
       atualizarValor(nova.valorAtualizado)
     } catch (e: any) {
-      setErroPagamento(e.message ?? 'Erro ao enviar mensagem')
+      setErroPagamento(e.message ?? 'Failed to send message')
     }
   }
 
   if (!conversaAtiva) {
     return (
       <div className="chat-window">
-        <div className="chat-empty">Selecione uma conversa</div>
+        <div className="chat-empty">Select a conversation</div>
       </div>
     )
   }
@@ -79,14 +79,14 @@ export function ChatWindow() {
         <div className="modal-overlay" onClick={() => setErroPagamento(null)}>
           <div className="modal">
             <p className="modal-title" style={{ color: '#c0392b' }}>
-              Saldo insuficiente
+              Insufficient balance
             </p>
             <p style={{ fontSize: 14, color: '#444', margin: '0 0 20px' }}>
               {erroPagamento}
             </p>
             <div className="modal-actions">
               <button className="btn-enviar" onClick={() => setErroPagamento(null)}>
-                Entendido
+                OK
               </button>
             </div>
           </div>

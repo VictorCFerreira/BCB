@@ -20,7 +20,7 @@ public class ClienteService {
     public void cadastrar(CadastroRequest req) {
         if (clienteRepository.findByDocumento(req.documento()).isPresent()) {
             throw new ResponseStatusException(
-                    HttpStatus.CONFLICT, "Documento já cadastrado");
+                    HttpStatus.CONFLICT, "Document already registered");
         }
 
         Cliente cliente = Cliente.builder()

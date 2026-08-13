@@ -18,14 +18,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/conversas")
 @RequiredArgsConstructor
-@Tag(name = "Conversas", description = "Listagem de conversas do cliente autenticado")
+@Tag(name = "Conversations", description = "Conversation listing for the authenticated client")
 public class ConversaController {
 
     private final ConversaService conversaService;
 
-    @Operation(summary = "Listar conversas", description = "Retorna todas as conversas onde o cliente autenticado é participante")
-    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
-    @ApiResponse(responseCode = "401", description = "Não autenticado")
+    @Operation(summary = "List conversations", description = "Returns all conversations where the authenticated client is a participant")
+    @ApiResponse(responseCode = "200", description = "List returned successfully")
+    @ApiResponse(responseCode = "401", description = "Not authenticated")
     @GetMapping
     public ResponseEntity<List<ConversaResponse>> listar(
             @AuthenticationPrincipal Cliente cliente) {

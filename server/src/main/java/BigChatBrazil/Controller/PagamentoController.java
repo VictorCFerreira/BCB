@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/pagamento")
 @RequiredArgsConstructor
-@Tag(name = "Pagamento", description = "Gestão financeira do cliente autenticado")
+@Tag(name = "Payment", description = "Financial management for the authenticated client")
 public class PagamentoController {
 
     private final PagamentoService pagamentoService;
 
-    @Operation(summary = "Recarregar saldo",
-            description = "Adiciona créditos ao saldo do cliente pré-pago")
-    @ApiResponse(responseCode = "200", description = "Recarga realizada com sucesso")
-    @ApiResponse(responseCode = "400", description = "Operação inválida para o tipo de plano ou valor inválido")
-    @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+    @Operation(summary = "Top up balance",
+            description = "Adds credits to a prepaid client's balance")
+    @ApiResponse(responseCode = "200", description = "Top-up completed successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid operation for plan type or invalid amount")
+    @ApiResponse(responseCode = "404", description = "Client not found")
     @PostMapping("/recarregar")
     public ResponseEntity<ClienteMudancaFinanceiroResponse> recarregar(
             @RequestBody RecargaRequest req,
@@ -34,11 +34,11 @@ public class PagamentoController {
                 pagamentoService.recarregar(cliente.getId(), req.valor()));
     }
 
-    @Operation(summary = "Atualizar limite mensal",
-            description = "Atualiza o limite mensal de consumo do cliente pós-pago")
-    @ApiResponse(responseCode = "200", description = "Limite atualizado com sucesso")
-    @ApiResponse(responseCode = "400", description = "Operação inválida para o tipo de plano ou valor inválido")
-    @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+    @Operation(summary = "Update monthly limit",
+            description = "Updates the monthly spending limit for a postpaid client")
+    @ApiResponse(responseCode = "200", description = "Limit updated successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid operation for plan type or invalid amount")
+    @ApiResponse(responseCode = "404", description = "Client not found")
     @PutMapping("/limite")
     public ResponseEntity<ClienteMudancaFinanceiroResponse> atualizarLimite(
             @RequestBody AtualizarLimiteRequest req,

@@ -26,7 +26,7 @@ export default function LoginPage() {
       })
       navigate('/chat')
     } catch (e: any) {
-      setError(e.message ?? 'Erro ao fazer login')
+      setError(e.message ?? 'Failed to sign in')
     } finally {
       setLoading(false)
     }
@@ -36,11 +36,11 @@ export default function LoginPage() {
     <div className="login-page">
       <div className="login-card">
         <h2 className="login-title">BCB</h2>
-        <p className="login-subtitle">Digite seu CPF ou CNPJ para entrar</p>
+        <p className="login-subtitle">Enter your CPF or CNPJ to sign in</p>
 
         <input
           type="text"
-          placeholder="CPF ou CNPJ (só números)"
+          placeholder="CPF or CNPJ (numbers only)"
           value={documento}
           onChange={e => setDocumento(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
@@ -49,10 +49,10 @@ export default function LoginPage() {
         {error && <p className="login-error">{error}</p>}
 
         <button onClick={handleSubmit} disabled={loading}>
-          {loading ? 'Entrando...' : 'Entrar'}
+          {loading ? 'Signing in...' : 'Sign in'}
         </button>
         <button onClick={() => navigate('/cadastro')}>
-          Criar conta
+          Create account
         </button>
 
       </div>

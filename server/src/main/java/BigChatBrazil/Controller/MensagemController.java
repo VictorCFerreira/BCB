@@ -19,17 +19,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/mensagens")
 @RequiredArgsConstructor
-@Tag(name = "Mensagens", description = "Envio e consulta de mensagens")
+@Tag(name = "Messages", description = "Message sending and retrieval")
 public class MensagemController {
 
     private final MensagemService mensagemService;
 
-    @Operation(summary = "Enviar mensagem",
-            description = "Envia uma mensagem para uma conversa existente ou cria uma nova conversa. " +
-                    "Debita o custo do saldo (pré-pago) ou do limite mensal (pós-pago)")
-    @ApiResponse(responseCode = "201", description = "Mensagem enfileirada com sucesso")
-    @ApiResponse(responseCode = "402", description = "Saldo ou limite insuficiente")
-    @ApiResponse(responseCode = "404", description = "Conversa ou destinatário não encontrado")
+    @Operation(summary = "Send message",
+            description = "Sends a message to an existing conversation or creates a new one. " +
+                    "Deducts the cost from balance (prepaid) or monthly limit (postpaid)")
+    @ApiResponse(responseCode = "201", description = "Message queued successfully")
+    @ApiResponse(responseCode = "402", description = "Insufficient balance or limit")
+    @ApiResponse(responseCode = "404", description = "Conversation or recipient not found")
     @PostMapping
     public ResponseEntity<MensagemResponse> enviar(
             @RequestBody EnviarMensagemRequest req,
@@ -38,13 +38,13 @@ public class MensagemController {
                 .body(mensagemService.enviar(cliente.getId(), req));
     }
 
-    @Operation(summary = "Listar mensagens de uma conversa",
-            description = "Retorna todas as mensagens de uma conversa ordenadas por data de criação")
-    @ApiResponse(responseCode = "200", description = "Mensagens retornadas com sucesso")
-    @ApiResponse(responseCode = "401", description = "Não autenticado")
+    @Operation(summary = "List messages in a conversation",
+            description = "Returns all messages in a conversation ordered by creation date")
+    @ApiResponse(responseCode = "200", description = "Messages returned successfully")
+    @ApiResponse(responseCode = "401", description = "Not authenticated")
     @GetMapping("/conversa/{conversaId}")
     public ResponseEntity<List<MensagemResponse>> listar(
-            @Parameter(description = "ID da conversa") @PathVariable Long conversaId) {
+            @Parameter(description = "Conversation ID") @PathVariable Long conversaId) {
         return ResponseEntity.ok(
                 mensagemService.listarPorConversa(conversaId));
     }

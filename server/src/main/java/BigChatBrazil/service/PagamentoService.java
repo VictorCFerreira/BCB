@@ -52,7 +52,7 @@ public class PagamentoService {
     private Double cobrarPrePago(Cliente cliente, Double custo) {
         if (cliente.getSaldo() < custo) {
             throw new SemSaldoLimiteException(
-                    "Saldo insuficiente. Saldo atual: R$" + String.format("%.2f", cliente.getSaldo()));
+                    "Insufficient balance. Current balance: R$" + String.format("%.2f", cliente.getSaldo()));
         }
         cliente.setSaldo(cliente.getSaldo() - custo);
         clienteRepository.save(cliente);
@@ -63,7 +63,7 @@ public class PagamentoService {
         double disponivel = cliente.getLimiteMensal() - cliente.getGastoMesAtual();
         if (disponivel < custo) {
             throw new SemSaldoLimiteException(
-                    "Limite mensal excedido. Disponível: R$" + String.format("%.2f", disponivel));
+                    "Monthly limit exceeded. Available: R$" + String.format("%.2f", disponivel));
         }
         cliente.setGastoMesAtual(cliente.getGastoMesAtual() + custo);
         clienteRepository.save(cliente);
@@ -73,16 +73,16 @@ public class PagamentoService {
     public ClienteMudancaFinanceiroResponse recarregar(Long clienteId, Double valor) {
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+                        HttpStatus.NOT_FOUND, "Client not found"));
 
         if (cliente.getPlano() != PlanoEnum.PRE_PAGO) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Recarga disponível apenas para clientes pré-pago");
+                    HttpStatus.BAD_REQUEST, "Top-up available only for prepaid clients");
         }
 
         if (valor <= 0) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Valor deve ser maior que zero");
+                    HttpStatus.BAD_REQUEST, "Amount must be greater than zero");
         }
 
         cliente.setSaldo(cliente.getSaldo() + valor);
@@ -94,16 +94,16 @@ public class PagamentoService {
     public ClienteMudancaFinanceiroResponse atualizarLimite(Long clienteId, Double novoLimite) {
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+                        HttpStatus.NOT_FOUND, "Client not found"));
 
         if (cliente.getPlano() != PlanoEnum.POS_PAGO) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Atualização de limite disponível apenas para clientes pós-pago");
+                    HttpStatus.BAD_REQUEST, "Limit update available only for postpaid clients");
         }
 
         if (novoLimite <= 0) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Limite deve ser maior que zero");
+                    HttpStatus.BAD_REQUEST, "Limit must be greater than zero");
         }
 
         cliente.setLimiteMensal(novoLimite);

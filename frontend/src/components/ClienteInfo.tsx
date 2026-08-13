@@ -18,7 +18,7 @@ export function ClienteInfo() {
   const handleConfirmar = async () => {
     const num = Number(valor)
     if (!valor || isNaN(num) || num <= 0) {
-      setError('Informe um valor válido maior que zero')
+      setError('Please enter a valid amount greater than zero')
       return
     }
 
@@ -36,7 +36,7 @@ export function ClienteInfo() {
       setValor('')
       setModalAberto(false)
     } catch (e: any) {
-      setError(e.message ?? 'Erro ao processar')
+      setError(e.message ?? 'Failed to process')
     } finally {
       setLoading(false)
     }
@@ -58,7 +58,7 @@ export function ClienteInfo() {
           <button
             className="btn-financeiro"
             onClick={() => setModalAberto(true)}
-            title={isPrePago ? 'Recarregar saldo' : 'Atualizar limite'}
+            title={isPrePago ? 'Top up balance' : 'Update limit'}
           >
             $
           </button>
@@ -66,18 +66,18 @@ export function ClienteInfo() {
 
         {isPrePago ? (
           <div className="cliente-saldo">
-            <span className="info-label">Saldo</span>
+            <span className="info-label">Balance</span>
             <span className="info-valor">
-              R$ {cliente.saldo?.toFixed(2) ?? '0,00'}
+              R$ {cliente.saldo?.toFixed(2) ?? '0.00'}
             </span>
           </div>
         ) : (
           <div className="cliente-saldo">
-            <span className="info-label">Mensal</span>
+            <span className="info-label">Monthly</span>
             <span className="info-valor">
-              R$ {cliente.gastoMesAtual?.toFixed(2) ?? '0,00'}
+              R$ {cliente.gastoMesAtual?.toFixed(2) ?? '0.00'}
               <span className="info-limite">
-                {' '}/ R$ {cliente.limiteMensal?.toFixed(2) ?? '0,00'}
+                {' '}/ R$ {cliente.limiteMensal?.toFixed(2) ?? '0.00'}
               </span>
             </span>
           </div>
@@ -88,11 +88,11 @@ export function ClienteInfo() {
         <div className="modal-overlay" onClick={handleOverlayClick}>
           <div className="modal">
             <p className="modal-title">
-              {isPrePago ? 'Recarregar saldo' : 'Atualizar limite mensal'}
+              {isPrePago ? 'Top up balance' : 'Update monthly limit'}
             </p>
 
             <div className="modal-field">
-              <label>{isPrePago ? 'Valor da recarga (R$)' : 'Novo limite mensal (R$)'}</label>
+              <label>{isPrePago ? 'Top-up amount (R$)' : 'New monthly limit (R$)'}</label>
               <input
                 type="number"
                 placeholder="Ex: 50.00"
@@ -114,14 +114,14 @@ export function ClienteInfo() {
                   setValor('')
                 }}
               >
-                Cancelar
+                Cancel
               </button>
               <button
                 className="btn-enviar"
                 onClick={handleConfirmar}
                 disabled={loading}
               >
-                {loading ? 'Processando...' : 'Confirmar'}
+                {loading ? 'Processing...' : 'Confirm'}
               </button>
             </div>
           </div>

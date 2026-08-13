@@ -24,7 +24,7 @@ export function Sidebar() {
     <>
       <div className={`sidebar ${conversaAtiva ? 'tem-conversa-ativa' : ''}`}>
         <div className="sidebar-header">
-          <span>Conversas</span>
+          <span>Conversations</span>
           <button className="btn-nova-conversa" onClick={() => setModalAberto(true)}>
             +
           </button>
@@ -32,7 +32,7 @@ export function Sidebar() {
   
         <div className="sidebar-lista"> 
           {conversas.length === 0 ? (
-            <p className="sidebar-empty">Nenhuma conversa ainda</p>
+            <p className="sidebar-empty">No conversations yet</p>
           ) : (
             conversas.map(c => (
               <div

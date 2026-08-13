@@ -21,7 +21,7 @@ export default function ChatPage() {
           {cliente?.nome}
         </span>
         <button className="topbar-logout" onClick={handleLogout}>
-          Sair
+          Sign out
         </button>
       </div>
 

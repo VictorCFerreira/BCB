@@ -19,24 +19,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@Tag(name = "Autenticação", description = "Endpoints de autenticação e cadastro de clientes")
+@Tag(name = "Authentication", description = "Authentication and client registration endpoints")
 public class AuthController {
 
     private final AuthService authService;
     private final ClienteService clienteService;
 
-    @Operation(summary = "Autenticar cliente", description = "Autentica pelo CPF ou CNPJ e retorna o token JWT")
-    @ApiResponse(responseCode = "200", description = "Autenticado com sucesso")
-    @ApiResponse(responseCode = "403", description = "Cliente inativo")
-    @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+    @Operation(summary = "Authenticate client", description = "Authenticates by CPF or CNPJ and returns a JWT token")
+    @ApiResponse(responseCode = "200", description = "Authenticated successfully")
+    @ApiResponse(responseCode = "403", description = "Inactive client")
+    @ApiResponse(responseCode = "404", description = "Client not found")
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest req) {
         return ResponseEntity.ok(authService.authenticate(req.documento()));
     }
 
-    @Operation(summary = "Cadastrar cliente", description = "Cria um novo cliente pré ou pós-pago")
-    @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso")
-    @ApiResponse(responseCode = "409", description = "Documento já cadastrado")
+    @Operation(summary = "Register client", description = "Creates a new prepaid or postpaid client")
+    @ApiResponse(responseCode = "201", description = "Client registered successfully")
+    @ApiResponse(responseCode = "409", description = "Document already registered")
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody CadastroRequest req) {
         clienteService.cadastrar(req);

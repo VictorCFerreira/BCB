@@ -29,12 +29,12 @@ export function MessageInput({ onSend }: Props) {
         onChange={e => setPrioridade(e.target.value as Prioridade)}
         className="select-prioridade"
       >
-        <option value="NORMAL">Normal · R$0,25</option>
-        <option value="URGENTE">Urgente · R$0,50</option>
+        <option value="NORMAL">Normal · R$0.25</option>
+        <option value="URGENTE">Urgent · R$0.50</option>
       </select>
       <input
         type="text"
-        placeholder="Digite uma mensagem..."
+        placeholder="Type a message..."
         value={conteudo}
         onChange={e => setConteudo(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && handleSend()}

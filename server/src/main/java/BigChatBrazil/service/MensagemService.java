@@ -34,7 +34,7 @@ public class MensagemService {
     public MensagemResponse enviar(Long clienteId, EnviarMensagemRequest req) {
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+                        HttpStatus.NOT_FOUND, "Client not found"));
 
         Conversa conversa = resolverConversa(cliente, req);
 
@@ -72,14 +72,14 @@ public class MensagemService {
         if (req.conversaId() != null) {
             return conversaRepository.findById(req.conversaId())
                     .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND, "Conversa não encontrada"));
+                            HttpStatus.NOT_FOUND, "Conversation not found"));
         }
 
         Cliente destinatario = clienteRepository
                 .findByDocumento(req.documentoDestinatario())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Destinatário não encontrado: " + req.documentoDestinatario()));
+                        "Recipient not found: " + req.documentoDestinatario()));
 
         return conversaRepository
                 .findByParticipantes(remetente.getId(), destinatario.getId())

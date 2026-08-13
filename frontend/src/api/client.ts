@@ -37,17 +37,17 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   if (response.status === 401) {
     localStorage.removeItem('bcb-auth')
     window.location.href = '/login'
-    throw new Error('Não autorizado')
+    throw new Error('Unauthorized')
   }
 
   if (response.status === 403) {
     const msg = await response.text()
-    throw new Error(msg || 'Acesso negado')
+    throw new Error(msg || 'Access denied')
   }
   
   if (response.status === 402) {
     const msg = await response.text()
-    throw new Error(msg || 'Saldo ou limite insuficiente')
+    throw new Error(msg || 'Insufficient balance or limit')
   }
   
   if (response.status === 204 ||
@@ -56,8 +56,8 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   }
   
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Erro desconhecido' }))
-    throw new Error(error.message ?? `Erro ${response.status}`)
+    const error = await response.json().catch(() => ({ message: 'Unknown error' }))
+    throw new Error(error.message ?? `Error ${response.status}`)
   }
   
   return response.json()

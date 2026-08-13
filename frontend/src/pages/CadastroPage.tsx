@@ -15,12 +15,12 @@ export default function CadastroPage() {
 
   const handleCadastrar = async () => {
     if (!nome.trim() || !documento.trim()) {
-      setError('Preencha nome e documento')
+      setError('Please fill in name and document')
       return
     }
   
     if (plano === 'POS_PAGO' && !limiteMensal) {
-      setError('Informe o limite mensal para plano pós-pago')
+      setError('Please enter the monthly limit for a postpaid plan')
       return
     }
   
@@ -37,7 +37,7 @@ export default function CadastroPage() {
   
       navigate('/login')
     } catch (e: any) {
-      setError(e.message ?? 'Erro ao cadastrar')
+      setError(e.message ?? 'Failed to register')
     } finally {
       setLoading(false)
     }
@@ -47,42 +47,42 @@ export default function CadastroPage() {
     <div className="cadastro-page">
       <div className="cadastro-card">
         <h2 className="cadastro-title">BCB</h2>
-        <p className="cadastro-subtitle">Criar nova conta</p>
+        <p className="cadastro-subtitle">Create new account</p>
 
         <div className="campo">
-          <label>Nome</label>
+          <label>Name</label>
           <input
             type="text"
-            placeholder="Seu nome completo"
+            placeholder="Your full name"
             value={nome}
             onChange={e => setNome(e.target.value)}
           />
         </div>
 
         <div className="campo">
-          <label>CPF ou CNPJ (só números)</label>
+          <label>CPF or CNPJ (numbers only)</label>
           <input
             type="text"
-            placeholder="Documento"
+            placeholder="Document"
             value={documento}
             onChange={e => setDocumento(e.target.value)}
           />
         </div>
 
         <div className="campo">
-          <label>Tipo de plano</label>
+          <label>Plan type</label>
           <select
             value={plano}
             onChange={e => setPlano(e.target.value as 'PRE_PAGO' | 'POS_PAGO')}
           >
-            <option value="PRE_PAGO">Pré-pago</option>
-            <option value="POS_PAGO">Pós-pago</option>
+            <option value="PRE_PAGO">Prepaid</option>
+            <option value="POS_PAGO">Postpaid</option>
           </select>
         </div>
 
         {plano === 'POS_PAGO' && (
           <div className="campo">
-            <label>Limite mensal (R$)</label>
+            <label>Monthly limit (R$)</label>
             <input
               type="number"
               placeholder="Ex: 100.00"
@@ -99,11 +99,11 @@ export default function CadastroPage() {
           onClick={handleCadastrar}
           disabled={loading}
         >
-          {loading ? 'Cadastrando...' : 'Cadastrar'}
+          {loading ? 'Registering...' : 'Register'}
         </button>
 
         <button className="btn-voltar" onClick={() => navigate('/login')}>
-          Já tenho conta
+          I already have an account
         </button>
       </div>
     </div>

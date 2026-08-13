@@ -19,10 +19,10 @@ public class AuthService {
     public AuthResponse authenticate(String documento) {
         Cliente client = clienteRepository.findByDocumento(documento)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Cliente não encontrado: " + documento));
+                        HttpStatus.NOT_FOUND, "Client not found: " + documento));
 
         if (!client.isAtivo()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cliente inativo");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Inactive client");
         }
 
         String token = jwtService.generateToken(client);

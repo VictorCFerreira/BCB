@@ -24,7 +24,7 @@ export function NovaConversaModal({ onClose }: Props) {
 
   const handleEnviar = async () => {
     if (!documento.trim() || !mensagem.trim()) {
-      setError('Preencha todos os campos')
+      setError('Please fill in all fields')
       return
     }
 
@@ -42,7 +42,7 @@ export function NovaConversaModal({ onClose }: Props) {
 
       onClose()
     } catch (e: any) {
-      setError(e.message ?? 'Erro ao enviar mensagem')
+      setError(e.message ?? 'Failed to send message')
     } finally {
       setLoading(false)
     }
@@ -55,13 +55,13 @@ export function NovaConversaModal({ onClose }: Props) {
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal">
-        <p className="modal-title">Nova conversa</p>
+        <p className="modal-title">New conversation</p>
 
         <div className="modal-field">
-          <label>Documento do destinatário (CPF/CNPJ)</label>
+          <label>Recipient document (CPF/CNPJ)</label>
           <input
             type="text"
-            placeholder="Só números"
+            placeholder="Numbers only"
             value={documento}
             onChange={e => setDocumento(e.target.value)}
           />
@@ -69,23 +69,23 @@ export function NovaConversaModal({ onClose }: Props) {
 
 
         <div className="modal-field">
-          <label>Primeira mensagem</label>
+          <label>First message</label>
           <textarea
             rows={3}
-            placeholder="Digite sua mensagem..."
+            placeholder="Type your message..."
             value={mensagem}
             onChange={e => setMensagem(e.target.value)}
           />
         </div>
 
         <div className="modal-field">
-          <label>Prioridade</label>
+          <label>Priority</label>
           <select
             value={prioridade}
             onChange={e => setPrioridade(e.target.value as Prioridade)}
           >
-            <option value="NORMAL">Normal · R$0,25</option>
-            <option value="URGENTE">Urgente · R$0,50</option>
+            <option value="NORMAL">Normal · R$0.25</option>
+            <option value="URGENTE">Urgent · R$0.50</option>
           </select>
         </div>
 
@@ -93,10 +93,10 @@ export function NovaConversaModal({ onClose }: Props) {
 
         <div className="modal-actions">
           <button className="btn-cancelar" onClick={onClose}>
-            Cancelar
+            Cancel
           </button>
           <button className="btn-enviar" onClick={handleEnviar} disabled={loading}>
-            {loading ? 'Enviando...' : 'Enviar'}
+            {loading ? 'Sending...' : 'Send'}
           </button>
         </div>
       </div>
