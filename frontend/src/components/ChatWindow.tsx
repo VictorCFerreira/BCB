@@ -30,7 +30,7 @@ export function ChatWindow() {
         if (jaExiste) {
           useChatStore.getState().atualizarMensagem(conversaAtiva.id, novaMensagem)
         } else {
-          useChatStore.getState().appendMensagem(conversaAtiva.id, novaMensagem)
+          useChatStore.getState().upsertMensagem(conversaAtiva.id, novaMensagem)
         }
       })
 
@@ -46,7 +46,7 @@ export function ChatWindow() {
     if (!conversaAtiva) return
     try {
       const nova = await mensagemService.enviar(conversaAtiva.id, conteudo, prioridade)
-      useChatStore.getState().appendMensagem(conversaAtiva.id, nova)
+      useChatStore.getState().upsertMensagem(conversaAtiva.id, nova)
       atualizarValor(nova.valorAtualizado)
     } catch (e: any) {
       setErroPagamento(e.message ?? 'Failed to send message')

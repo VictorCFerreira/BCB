@@ -10,6 +10,7 @@ interface ChatState {
   setMensagens: (conversaId: number, mensagens: Mensagem[]) => void
   appendMensagem: (conversaId: number, mensagem: Mensagem) => void
   atualizarMensagem: (conversaId: number, mensagem: Mensagem) => void
+  upsertMensagem: (conversaId: number, mensagem: Mensagem) => void
 }
 
 export const useChatStore = create<ChatState>()(set => ({
@@ -36,4 +37,17 @@ export const useChatStore = create<ChatState>()(set => ({
           ),
         },
       })),
+      upsertMensagem: (conversaId: number, mensagem: Mensagem) =>
+        set(s => {
+          const atuais = s.mensagens[conversaId] ?? []
+          const existe = atuais.some(m => m.id === mensagem.id)
+          return {
+            mensagens: {
+              ...s.mensagens,
+              [conversaId]: existe
+                ? atuais.map(m => (m.id === mensagem.id ? mensagem : m))
+                : [...atuais, mensagem],
+            },
+          }
+        }),
 }))

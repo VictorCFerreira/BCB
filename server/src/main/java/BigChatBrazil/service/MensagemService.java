@@ -14,6 +14,7 @@ import BigChatBrazil.repository.MensagemRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,6 +31,7 @@ public class MensagemService {
     private final ClienteRepository clienteRepository;
     private final PagamentoService pagamentoService;
     private final MessageQueue messageQueue;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public MensagemResponse enviar(Long clienteId, EnviarMensagemRequest req) {
         Cliente cliente = clienteRepository.findById(clienteId)
@@ -57,7 +59,13 @@ public class MensagemService {
         mensagem = mensagemRepository.save(mensagem);
         messageQueue.enqueue(mensagem.getId(), prioridade);
 
-        return MensagemResponse.from(mensagem, valorAtualizado);
+        MensagemResponse response = MensagemResponse.from(mensagem, valorAtualizado);
+        messagingTemplate.convertAndSend(
+                "/topic/conversa/" + conversa.getId(),
+                response
+        );
+
+        return response;
     }
 
     public List<MensagemResponse> listarPorConversa(Long conversaId) {

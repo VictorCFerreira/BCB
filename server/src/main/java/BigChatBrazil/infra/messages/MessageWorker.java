@@ -3,6 +3,7 @@ package BigChatBrazil.infra.messages;
 import BigChatBrazil.Enum.StatusMensagemEnum;
 import BigChatBrazil.domain.DTO.Response.MensagemResponse;
 import BigChatBrazil.repository.MensagemRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -22,6 +23,7 @@ public class MessageWorker {
     private final SimpMessagingTemplate messagingTemplate;
 
     @Scheduled(fixedDelay = 2000)
+    @Transactional
     public void processar() {
         Optional<Long> next;
         while ((next = messageQueue.poll()).isPresent()) {
